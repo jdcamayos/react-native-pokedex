@@ -5,8 +5,11 @@ import Header from '../components/Pokemon/Header';
 import Type from '../components/Pokemon/Type';
 import Stats from '../components/Pokemon/Stats';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import Favorite from '../components/Pokemon/Favorite';
+import useAuth from '../hooks/useAuth';
 
 export default function Pokemon(props) {
+	const { auth } = useAuth();
 	const {
 		navigation,
 		route: { params },
@@ -16,18 +19,18 @@ export default function Pokemon(props) {
 
 	useEffect(() => {
 		navigation.setOptions({
-			headerRight: () => null,
+			headerRight: () => auth && <Favorite id={ pokemon?.id } />,
 			headerLeft: () => (
 				<Icon
 					name='arrow-left'
 					color='#fff'
-					size={20}
-					style={{ marginLeft: 20 }}
-					onPress={navigation.goBack}
+					size={ 20 }
+					style={ { marginLeft: 20 } }
+					onPress={ navigation.goBack }
 				/>
 			),
 		});
-	}, [navigation, params]);
+	}, [navigation, params, pokemon, auth]);
 
 	useEffect(() => {
 		(async () => {
@@ -45,13 +48,13 @@ export default function Pokemon(props) {
 	return (
 		<ScrollView>
 			<Header
-				name={pokemon.name}
-				order={pokemon.order}
-				image={pokemon.sprites.other['official-artwork']['front_default']}
-				type={pokemon.types[0].type.name}
+				name={ pokemon.name }
+				order={ pokemon.order }
+				image={ pokemon.sprites.other['official-artwork']['front_default'] }
+				type={ pokemon.types[0].type.name }
 			/>
-			<Type types={pokemon.types} />
-			<Stats stats={pokemon.stats} />
+			<Type types={ pokemon.types } />
+			<Stats stats={ pokemon.stats } />
 		</ScrollView>
 	);
 }
