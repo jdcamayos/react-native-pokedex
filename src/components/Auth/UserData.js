@@ -15,14 +15,13 @@ export default function UserData() {
         (async () => {
           try {
             const response = await getPokemonsFavoriteApi()
-            console.log(response)
             setTotal(response.length)
           } catch (error) {
             console.log(error)
           }
         })()
       }
-    },[])
+    }, [])
   )
 
 
